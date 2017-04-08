@@ -10,7 +10,7 @@
     <RootNamespace>ExcelWorkbook4</RootNamespace>
     <AssemblyName>订单模板</AssemblyName>
     <VSTO_HostDocumentName>订单模板.xlsm</VSTO_HostDocumentName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
     <OfficeApplication>Excel</OfficeApplication>
     <ProjectGuid>{288FEAAF-C45D-456D-ADF5-FB0635FB01B0}</ProjectGuid>
@@ -18,10 +18,10 @@
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <TargetFrameworkProfile />
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>F:\模板2\</PublishUrl>
+    <PublishUrl>F:\工程文件\模板2\</PublishUrl>
     <InstallUrl />
     <TargetCulture>zh-chs</TargetCulture>
-    <ApplicationVersion>1.0.0.13</ApplicationVersion>
+    <ApplicationVersion>1.0.0.16</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -89,6 +89,11 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Net40\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NPOI">
       <HintPath>Net40\NPOI.dll</HintPath>
     </Reference>
@@ -136,10 +141,6 @@
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Vbe.Interop, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
-      <Private>False</Private>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <Private>False</Private>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </Reference>
@@ -255,9 +256,9 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-        <ProjectProperties HostName="订单模板.xlsm" HostPackage="{3F2B7691-D1D1-402F-9370-2704A737CF60}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="XLS" Language="CS" TemplatesPath="VSTOTemplates" DebugInfoExeName="C:\软件安装\Office2013\Office15\Excel.exe" DebugInfoCommandLine="/x &quot;[$OUTPUT]订单模板.xlsm&quot;" />
+        <ProjectProperties HostName="订单模板.xlsm" HostPackage="{3F2B7691-D1D1-402F-9370-2704A737CF60}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="XLS" Language="CS" TemplatesPath="VSTOTemplates" DebugInfoExeName="C:\Program Files\Microsoft Office\root\Office16\Excel.exe" DebugInfoCommandLine="/x &quot;[$OUTPUT]订单模板.xlsm&quot;" />
         <Host Name="Excel Document" Path=".\订单模板.xlsm" GeneratedCodeNamespace="ExcelWorkbook4" PublishedHash="AA7D8001F2D33F8CAF0E81446EA31ECE96E54E1D">
-          <HostItem Name="Sheet1" Code="Sheet1.cs" CanonicalName="Sheet1" PublishedHash="C1D0FDB268AF17CC9630A5A011FC642E9A05F6BC" DisplayName="订单" Blueprint="Sheet1.Designer.xml" GeneratedCode="Sheet1.Designer.cs" />
+          <HostItem Name="Sheet1" Code="Sheet1.cs" CanonicalName="Sheet1" PublishedHash="6E120A38790BDB3A7FEB137805B7B4256DA0F87B" DisplayName="订单" Blueprint="Sheet1.Designer.xml" GeneratedCode="Sheet1.Designer.cs" />
           <HostItem Name="Sheet2" Code="Sheet2.cs" CanonicalName="Sheet2" PublishedHash="8E1C7A752AE07AB7CFA55112F437AAF021DC5885" DisplayName="产品编码" Blueprint="Sheet2.Designer.xml" GeneratedCode="Sheet2.Designer.cs" />
           <HostItem Name="Sheet3" Code="Sheet3.cs" CanonicalName="Sheet3" PublishedHash="4526C804F3E2DB8E69ED27A7310028DF59A236A6" DisplayName="Sheet1" Blueprint="Sheet3.Designer.xml" GeneratedCode="Sheet3.Designer.cs" />
           <HostItem Name="Sheet4" Code="Sheet4.cs" CanonicalName="Sheet4" PublishedHash="B164BC07711E72D762E970E1C803100BAA0421A7" DisplayName="设置" Blueprint="Sheet4.Designer.xml" GeneratedCode="Sheet4.Designer.cs" />

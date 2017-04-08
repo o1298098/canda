@@ -86,11 +86,13 @@ namespace ExcelWorkbook4
             }
             string[] name = new string[rowNumber];
 
-            for (int k = 0; k < rowNumber; k++)
-            {
-                int l = k + 1;
-                name[k] = activeWorksheet.get_Range("P" + l).Value2.ToString();
-            }
+            //for (int k = 0; k < rowNumber; k++)
+            //{
+            //    int l = k + 1;
+            //    if (activeWorksheet.get_Range("P" + l).Value2 == null)
+            //    { continue; }
+            //    name[k] = activeWorksheet.get_Range("P" + l).Value2;
+            //}
             int time2 = 1;
             //object[,] mark = new string[1, rowNumber-2];
 
@@ -726,8 +728,6 @@ namespace ExcelWorkbook4
                 }
             }
 
-        }
-
-       public static void test(){ string test = ""; }
+        }     
     }
 }
