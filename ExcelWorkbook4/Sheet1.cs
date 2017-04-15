@@ -41,9 +41,9 @@ namespace ExcelWorkbook4
         /// </summary>
         private void InternalStartup()
         {
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.ZTOBTN.Click += new System.EventHandler(this.ZTOBTN_Click);
+            this.YTOBTN.Click += new System.EventHandler(this.YTOBTN_Click);
+            this.btnsort.Click += new System.EventHandler(this.btnsort_Click);
             this.Startup += new System.EventHandler(this.Sheet1_Startup);
             this.Shutdown += new System.EventHandler(this.Sheet1_Shutdown);
 
@@ -59,14 +59,14 @@ namespace ExcelWorkbook4
          }
         
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ZTOBTN_Click(object sender, EventArgs e)
         {
             //Thread t = new Thread(new ThreadStart(NewMethod));
             //t.Start();
-            NewMethod();
+            runMethod();
         }
-        #region  
-        public void NewMethod()
+       
+        public void runMethod()
         {
 
             System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
@@ -94,12 +94,18 @@ namespace ExcelWorkbook4
             //    name[k] = activeWorksheet.get_Range("P" + l).Value2;
             //}
             int time2 = 1;
-            //object[,] mark = new string[1, rowNumber-2];
+           
 
             if (dtbfs == "手动选择")
             {
                 var selection = Globals.ThisWorkbook.Application.Selection;
                 int a = selection.Rows.Count + 1;
+                int firstnum = selection.Rows[1].Row;
+                int lastnum = selection.Rows[a - 1].Row;
+                object[,] mark = new object[a, 1];
+                object[] tmark = new object[1] { mark };
+                string fcell = "T" + firstnum + ":T" + lastnum;
+
                 for (int i = 1; i < a; i++)
                 {
                     if (selection.Cells.SpecialCells(XlCellType.xlCellTypeVisible, 12).Rows[i].Hidden == false)
@@ -127,12 +133,16 @@ namespace ExcelWorkbook4
                             receivercity = province + "," + city + "," + district;
                         }
                         GetDaTouBi(sendcity, sendaddress, receivercity, receiveraddress, sb);
-                        activeWorksheet.get_Range("T" + num).Value2 = sb.ToString();
+                        mark[i - 1, 0] = sb.ToString();
                     }
                 }
+                activeWorksheet.get_Range(fcell).Columns[1].Value2 = tmark[0];
             }
             else
             {
+                object[,] mark = new object[rowNumber, 1];
+                object[] tmark = new object[1] { mark };
+                string fcell = "T2:T" + rowNumber;
                 for (int i = 2; i < rowNumber + 1; i++)
                 {
                     string sendcity, receivercity;
@@ -157,24 +167,12 @@ namespace ExcelWorkbook4
                     if (!((IList)place).Contains(searchplace))
                     {
                         GetDaTouBi(sendcity, sendaddress, receivercity, receiveraddress, sb);
-                        activeWorksheet.get_Range("T" + i).Value2 = sb.ToString();
+                        mark[i - 1, 0] = sb.ToString();
                     }
-                    else
-                    {
-                        activeWorksheet.get_Range("T" + i).Value2 = "";
-                    }
-                    //else
-                    //{
-                    //    if (activeWorksheet.get_Range("N" + i).DisplayFormat.Font.Bold == true)
-                    //    {
-                    //        GetDaTouBi(sendcity, sendaddress, receivercity, receiveraddress, sb);
-                    //        activeWorksheet.get_Range("T" + i).Value2 = sb.ToString();
-                    //    }
-                    //    else
-                    //    {
-                    //        activeWorksheet.get_Range("T" + i).Value2 = "";
-                    //    }
+                  
+                   
                     //}
+                  
                     if (paixu == "是")
                     {
                         string namesort = activeWorksheet.get_Range("P" + i).Value2.ToString();
@@ -198,10 +196,12 @@ namespace ExcelWorkbook4
 
                       
                     }
+
                     Application.StatusBar = "正在检验地址并生成大头笔.....已完成（" + i + "/" + rowNumber + ")";
 
-                }             
-               
+                }
+                activeWorksheet.get_Range(fcell).Columns[1].Value2 = tmark[0];
+                
             }
             if (paixu == "是") {
             activeWorksheet.get_Range("A2:U" + rowNumber).Sort(activeWorksheet.get_Range("U2:U" + rowNumber), XlSortOrder.xlAscending,
@@ -218,7 +218,7 @@ namespace ExcelWorkbook4
            
 
         }
-        #endregion
+     
         public string GetDaTouBi(string sendcity, string sendaddress, string receivercity, string receiveraddress, StringBuilder sb)
         {
             sb.Append(PostDateFunc.GetRemaike2(sendcity, sendaddress, receivercity, receiveraddress));
@@ -316,42 +316,36 @@ namespace ExcelWorkbook4
             return drtable;
         }
         #endregion
-        public System.Data.DataTable samenum(int rowCount,int colCount, System.Data.DataTable datable)
-        {
-            System.Data.DataTable drtable = new System.Data.DataTable();
-            string bnum;
-            var selection = Globals.ThisWorkbook.Application.Selection;          
-                DataColumn column = new DataColumn("行号");
-                drtable.Columns.Add(column);
-                column = new DataColumn("地址");
-                drtable.Columns.Add(column);
-            if (colCount == 3)
-            {
-                column = new DataColumn("优先级");
-                drtable.Columns.Add(column);
-            }
+        //public System.Data.DataTable samenum(int rowCount,int colCount, System.Data.DataTable datable)
+        //{
+        //    System.Data.DataTable drtable = new System.Data.DataTable();
+        //    string bnum;
+        //    var selection = Globals.ThisWorkbook.Application.Selection;          
+        //        DataColumn column = new DataColumn("行号");
+        //        drtable.Columns.Add(column);
+        //        column = new DataColumn("地址");
+        //        drtable.Columns.Add(column);
+        //    if (colCount == 3)
+        //    {
+        //        column = new DataColumn("优先级");
+        //        drtable.Columns.Add(column);
+        //    }
             
-            for (int i = 1; i <= rowCount-1; i++)
-                {
-                    int num = selection.Rows[i].Row;
-                    DataRow dataRow = drtable.NewRow();              
-                    dataRow[0] =num;
-                    dataRow[1] = Globals.Sheet1.get_Range("N" + num).Value2;
-                if (colCount == 3)
-                {
-                    bnum = Globals.Sheet1.get_Range("D" + num).Value2.ToString();
-                    dataRow[2] = GetStrName(datable, "%" + bnum + "%", "类型", " like", "优先级");
-                }
-                drtable.Rows.Add(dataRow);
-                }
-
-                    
-                
-
-                
-           
-            return drtable;
-        }
+        //    for (int i = 1; i <= rowCount-1; i++)
+        //        {
+        //            int num = selection.Rows[i].Row;
+        //            DataRow dataRow = drtable.NewRow();              
+        //            dataRow[0] =num;
+        //            dataRow[1] = Globals.Sheet1.get_Range("N" + num).Value2;
+        //        if (colCount == 3)
+        //        {
+        //            bnum = Globals.Sheet1.get_Range("D" + num).Value2.ToString();
+        //            dataRow[2] = GetStrName(datable, "%" + bnum + "%", "类型", " like", "优先级");
+        //        }
+        //        drtable.Rows.Add(dataRow);
+        //        }
+        //    return drtable;
+        //}
         private string GetStrName(System.Data.DataTable dtable, string Name,string Keyname,string type,string Pname)
         {
            
@@ -389,243 +383,369 @@ namespace ExcelWorkbook4
             }
             return result;
         }
-        private void button2_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 计算运费
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //private void button2_Click(object sender, EventArgs e)
+        //{
+        //    var selection = Globals.ThisWorkbook.Application.Selection;            
+        //    int a = selection.Rows.Count+1;
+        //    Globals.Sheet1.get_Range("U"+ selection.Rows[1].Row+":AA"+ selection.Rows[selection.Rows.Count].Row).Value2="";
+        //    string cpqd = Globals.Sheet4.get_Range("B8").Value2;
+        //    string yfjs = Globals.Sheet4.get_Range("B10").Value2;
+        //    string tsqy = Globals.Sheet4.get_Range("D10").Value2;
+        //    string kyqy = Globals.Sheet4.get_Range("D11").Value2;
+        //    string emsqy = Globals.Sheet4.get_Range("D12").Value2;
+        //    string emsqyc = Globals.Sheet4.get_Range("E12").Value2;
+        //    System.Data.DataTable drtable =ImportExcelFile(cpqd,0,1,2);
+        //    //Excel.Workbook wb =Application.Workbooks.Open(cpqd, missing, true, missing, missing, missing,missing, missing, missing, true, missing, missing, missing, missing, missing);
+        //    //Excel.Worksheet ws = (Excel.Worksheet)wb.Worksheets.get_Item(1);
+        //    //Globals.Sheet1.get_Range("O2").Value2= ws.get_Range("B12").Value2;
+        //    System.Data.DataTable sametable=samenum(a,2,null);
+        //    for (int i = 1; i < a; i++)
+        //    {
+        //        if (selection.Cells.SpecialCells(XlCellType.xlCellTypeVisible, 12).Rows[i].Hidden == false)
+        //        {
+        //            int num = selection.Rows[i].Row;
+        //            int snum = Convert.ToInt32(Globals.Sheet1.get_Range("C" + num).Value2);
+        //            if (Globals.Sheet1.get_Range("L" + num).Value2 == null)
+        //            {
+        //                continue;
+        //            }
+        //            string bnum = Globals.Sheet1.get_Range("D" + num).Value2.ToString();
+        //            string pname = Globals.Sheet1.get_Range("B" + num).Value2.ToString();
+        //            string province = Globals.Sheet1.get_Range("K" + num).Value2;
+        //            string city = Globals.Sheet1.get_Range("L" + num).Value2;
+        //            string xian = Globals.Sheet1.get_Range("M" + num).Value2;
+        //            string address = Globals.Sheet1.get_Range("N" + num).Value2;
+        //            string size = GetStrName(drtable, bnum, "编码", "=", "规格");
+        //            string xiangzhong = GetStrName(drtable, bnum, "编码", "=", "每箱重量（kg）");
+        //            string jianzhong = GetStrName(drtable, bnum, "编码", "=", "单件重量（kg）");
+        //            string sfjzx = GetStrName(drtable, bnum, "编码", "=", "顺丰计重箱");
+        //            string sfjzt = GetStrName(drtable, bnum, "编码", "=", "顺丰计重台");
+        //            string kyjzx = GetStrName(drtable, bnum, "编码", "=", "跨越物流");
+        //            string hanghao = GetStrName(sametable, address, "地址", "=", "行号");
+        //            string xs = "";
+        //            decimal sizenum = GetNumber(size);
+        //            string danwei = Getcn(size);
+        //            if (sizenum != 0)
+        //            {
+        //                decimal xiangshu = snum / Convert.ToInt32(sizenum);
+        //                decimal jianshu = snum % sizenum;
+        //                if (jianshu != 0 && xiangshu != 0)
+        //                {
+        //                    xs = xiangshu + "箱" + pname + "+" + jianshu + danwei.Substring(0, 1) + pname;
+        //                }
+        //                else if (jianshu != 0 && xiangshu == 0)
+        //                {
+        //                    xs = jianshu + danwei.Substring(0, 1) + pname;
+        //                }
+        //                else
+        //                {
+        //                    xs = xiangshu + "箱" + pname;
+        //                }
+        //                Globals.Sheet1.get_Range("U" + num).Value2 = xs;
+        //                if (GetNumber(sfjzx) > 0)
+        //                { xiangzhong = GetNumber(sfjzx).ToString(); }
+        //                if (GetNumber(sfjzt) > 0)
+        //                { jianzhong = GetNumber(sfjzt).ToString(); }
+        //                decimal zhongliangb = xiangshu * Convert.ToDecimal((xiangzhong != "") ? xiangzhong : "0");
+        //                decimal zhongliangs = jianshu * Convert.ToDecimal((jianzhong != "") ? jianzhong : "0");
+        //                decimal zhongliangt = zhongliangb + zhongliangs;//重量
+        //                decimal hebingzhong = Convert.ToDecimal(Globals.Sheet1.get_Range("V" + hanghao).Value2);
+        //                decimal ZL = hebingzhong + zhongliangt;
+        //                Globals.Sheet1.get_Range("V" + hanghao).Value2 = ZL;
+        //                //计算顺丰邮费
+        //                System.Data.DataTable SFtable = ImportExcelFile(yfjs, 0, 2, 3);
+        //                string yunfei = "0";
+        //                //if(tsqy.Contains(city.Substring(0,2)))
+        //                //{
+        //                //    city= province;
+        //                //}
+        //                string minpay = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "最低消费(顺丰)");
+        //                if (minpay == null) { minpay = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "最低消费(顺丰)"); }
+        //                string qizhong = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "发货起重(顺丰)");
+        //                if (qizhong == null) { qizhong = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "发货起重(顺丰)"); }
+        //                qizhong = qizhong == "" ? "0 " : qizhong;
+        //                minpay = minpay == "" ? "0" : minpay;
+        //                if (ZL > Convert.ToInt32(qizhong))
+        //                {
+        //                    yunfei = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "顺丰物流");
+        //                    if (yunfei == "0")
+        //                    {
+        //                        yunfei = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "顺丰物流");
+        //                    }
+        //                }
+
+
+        //                decimal jiage = ZL * Convert.ToDecimal(yunfei);
+        //                decimal finaljiage;
+        //                //if (yunfei != "0")
+        //                //{
+        //                finaljiage = jiage > Convert.ToDecimal(minpay) ? jiage : Convert.ToDecimal(minpay);
+        //                //}
+        //                //else
+        //                //{
+        //                //    finaljiage = 0;
+        //                //}
+        //                Globals.Sheet1.get_Range("W" + hanghao).Value2 = finaljiage;
+        //                //计算跨越邮费
+        //                //System.Data.DataTable KYtable = ImportExcelFile(yfjs, 0,2,3);
+        //                city = Globals.Sheet1.get_Range("L" + num).Value2;
+        //                //if (kyqy.Contains(province.Substring(0, 2)) || kyqy.Contains(city.Substring(0, 2)))
+        //                //{
+        //                if (GetNumber(kyjzx) > 0)
+        //                {
+        //                    xiangzhong = GetNumber(kyjzx).ToString();
+        //                }
+        //                if (GetNumber(sfjzt) > 0)
+        //                {
+        //                    jianzhong = GetNumber(sfjzt).ToString();
+        //                }
+        //                zhongliangb = xiangshu * Convert.ToDecimal((xiangzhong != "") ? xiangzhong : "0");
+        //                zhongliangs = jianshu * Convert.ToDecimal((jianzhong != "") ? jianzhong : "0");
+        //                zhongliangt = zhongliangb + zhongliangs;
+        //                hebingzhong = Convert.ToDecimal(Globals.Sheet1.get_Range("X" + hanghao).Value2);
+        //                ZL = hebingzhong + zhongliangt;
+        //                qizhong = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "发货起重(跨越)");
+        //                if (qizhong == null) { qizhong = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "发货起重(跨越)"); }
+        //                yunfei = "0";
+        //                minpay = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "最低消费(跨越)");
+        //                if (minpay == null) { minpay = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "最低消费(跨越)"); }
+        //                qizhong = qizhong == "" ? "0 " : qizhong;
+        //                minpay = minpay == "" ? "0" : minpay;
+        //                if (ZL <= 100 & ZL >= Convert.ToInt32(qizhong))
+        //                {
+        //                    yunfei = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "≤100");
+        //                    if (yunfei == null)
+        //                    {
+        //                        yunfei = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "≤100");
+        //                    }
+
+        //                }
+        //                else if (ZL > 100 && ZL <= 300)
+        //                {
+        //                    yunfei = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "101-300");
+        //                    if (yunfei == null)
+        //                    {
+        //                        yunfei = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "101-300");
+        //                    }
+        //                }
+        //                else if (ZL > 300 && ZL <= 500)
+        //                {
+        //                    yunfei = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "301-500");
+        //                    if (yunfei == null)
+        //                    {
+        //                        yunfei = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "301-500");
+        //                    }
+        //                }
+        //                else if (ZL > 500 && ZL <= 1000)
+        //                {
+        //                    yunfei = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "501-1000G");
+        //                    if (yunfei == null)
+        //                    {
+        //                        yunfei = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "501-1000");
+        //                    }
+        //                }
+        //                else if (ZL > 1000)
+        //                {
+        //                    yunfei = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "＞1000");
+        //                    if (yunfei == null)
+        //                    {
+        //                        yunfei = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "＞1000");
+        //                    }
+        //                }
+        //                yunfei = yunfei == "" ? "0" : yunfei;
+        //                jiage = ZL * Convert.ToDecimal(yunfei);
+        //                //if (yunfei != "0")
+        //                //{
+        //                finaljiage = jiage > Convert.ToDecimal(minpay) ? jiage : Convert.ToDecimal(minpay);
+        //                //}
+        //                //else
+        //                //{
+        //                //    finaljiage = 0;
+        //                //}
+        //                Globals.Sheet1.get_Range("X" + hanghao).Value2 = ZL;
+        //                Globals.Sheet1.get_Range("Y" + hanghao).Value2 = finaljiage;
+        //                //}
+        //                //计算ems邮费 
+        //                //if (emsqy.Contains(province.Substring(0, 2)) && !emsqyc.Contains(xian.Substring(0, 2)))
+        //                //{
+
+        //                //    string emssz = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "地点", " like", "EMS首重1");
+        //                //    string emssz2 = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "地点", " like", "EMS首重2");
+        //                //    string emsxz = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "地点", " like", "EMS续重");
+        //                //    xiangzhong = GetStrName(drtable, bnum, "编码", "=", "每箱重量（kg）");
+        //                //    jianzhong = GetStrName(drtable, bnum, "编码", "=", "单件重量（kg）");
+        //                //    zhongliangb = xiangshu * Convert.ToDecimal((xiangzhong != "") ? xiangzhong : "0");
+        //                //    zhongliangs = jianshu * Convert.ToDecimal((jianzhong != "") ? jianzhong : "0");
+        //                //    zhongliangt = zhongliangb + zhongliangs;
+        //                //    double syzl = Convert.ToDouble(zhongliangt);
+
+        //                //    if (syzl > 0.5)
+        //                //    {
+        //                //        syzl = syzl - 1;
+        //                //        int time = 0;
+        //                //        for (int k=0; syzl > 0.5; k++)
+        //                //        {
+        //                //            time++;
+        //                //            syzl = syzl - 0.5;       
+
+        //                //        }
+        //                //        if (syzl > 0 && syzl < 0.5) { time++; }
+        //                //         jiage = Convert.ToInt32(emssz2) + 1 +(time* Convert.ToInt32(emsxz));
+        //                //    }
+        //                //    else
+        //                //    {
+        //                //        jiage = Convert.ToInt32(emssz) + 1;
+        //                //    }
+        //                //    Globals.Sheet1.get_Range("Z" + num).Value2 = jiage + "元";
+        //                //}
+        //            }
+
+        //        }
+        //    }
+        //}
+
+
+        //private void button3_Click(object sender, EventArgs e)
+        //{
+        //    var selection = Globals.ThisWorkbook.Application.Selection;
+        //    int a = selection.Rows.Count + 1;
+        //    Globals.Sheet1.get_Range("H" + selection.Rows[1].Row + ":H" + selection.Rows[selection.Rows.Count].Row).Value2 = "";
+        //    string pydq = Globals.Sheet4.get_Range("D13").Value2;
+        //    string yfjs = Globals.Sheet4.get_Range("B10").Value2;
+        //    string cpqd = Globals.Sheet4.get_Range("B8").Value2;
+        //    System.Data.DataTable yftable = ImportExcelFile(yfjs,1,1,2);
+        //    System.Data.DataTable emstable = ImportExcelFile(yfjs, 2, 3, 4);
+        //    System.Data.DataTable drtable = ImportExcelFile(cpqd, 0, 1, 2);
+        //    string emsqy = Globals.Sheet4.get_Range("D12").Value2;
+        //    string emsqyc = Globals.Sheet4.get_Range("E12").Value2;
+        //    string yunfei="0";
+        //    string yunfeix = "0";
+        //    System.Data.DataTable sametable = samenum(a,3,yftable);
+        //    for (int i = 1; i < a; i++)
+        //    {
+        //        if (selection.Cells.SpecialCells(XlCellType.xlCellTypeVisible, 12).Rows[i].Hidden == false)
+        //        {
+        //            int num = selection.Rows[i].Row;
+        //            if (Globals.Sheet1.get_Range("L" + num).Value2 == null)
+        //            {
+        //                continue;
+        //            }
+        //            int snum = Convert.ToInt32(Globals.Sheet1.get_Range("C" + num).Value2);
+        //            string bnum = Globals.Sheet1.get_Range("D" + num).Value2.ToString();
+        //            string shuliang = Globals.Sheet1.get_Range("C" + num).Value2.ToString();
+        //            string province = Globals.Sheet1.get_Range("K" + num).Value2 == null ? "  " : Globals.Sheet1.get_Range("K" + num).Value2;
+        //            string city = Globals.Sheet1.get_Range("L" + num).Value2;
+        //            string xian = Globals.Sheet1.get_Range("M" + num).Value2;
+        //            string address = Globals.Sheet1.get_Range("N" + num).Value2;
+        //            string size = GetStrName(drtable, bnum, "编码", "=", "规格");
+        //            object maxnum = sametable.Compute("Min(优先级)", "地址='" + address + "'");
+        //            string hanghao = GetStrName(sametable, address, "优先级='" + maxnum + "'and 地址", "=", "行号");
+        //            int byf = 0;
+        //            int jiage = 0;
+        //            if (emsqy.Contains(province.Substring(0, 2)) && !emsqyc.Contains(xian.Substring(0, 2)))
+        //            {
+        //                decimal sizenum = GetNumber(size);
+        //                if (sizenum != 0)
+        //                {
+        //                    decimal xiangshu = snum / Convert.ToInt32(sizenum);
+        //                    decimal jianshu = snum % sizenum;
+        //                    string emssz = GetStrName(emstable, "%" + province.Substring(0, 2) + "%", "地点", " like", "EMS首重1");
+        //                    string emssz2 = GetStrName(emstable, "%" + province.Substring(0, 2) + "%", "地点", " like", "EMS首重2");
+        //                    string emsxz = GetStrName(emstable, "%" + province.Substring(0, 2) + "%", "地点", " like", "EMS续重");
+        //                    string xiangzhong = GetStrName(drtable, bnum, "编码", "=", "每箱重量（kg）");
+        //                    string jianzhong = GetStrName(drtable, bnum, "编码", "=", "单件重量（kg）");
+        //                    decimal zhongliangb = xiangshu * Convert.ToDecimal((xiangzhong != "") ? xiangzhong : "0");
+        //                    decimal zhongliangs = jianshu * Convert.ToDecimal((jianzhong != "") ? jianzhong : "0");
+        //                    decimal zhongliangt = zhongliangb + zhongliangs;
+        //                    double syzl = Convert.ToDouble(zhongliangt);
+        //                    if (syzl > 0.5)
+        //                    {
+        //                        syzl = syzl - 1;
+        //                        int time = 0;
+        //                        for (int k = 0; syzl > 0.5; k++)
+        //                        {
+        //                            time++;
+        //                            syzl = syzl - 0.5;
+
+        //                        }
+        //                        if (syzl > 0 && syzl < 0.5) { time++; }
+        //                        jiage = Convert.ToInt32(emssz2) + 1 + (time * Convert.ToInt32(emsxz));
+        //                    }
+        //                    else
+        //                    {
+        //                        jiage = Convert.ToInt32(emssz) + 1;
+        //                    }
+
+        //                    byf = jiage;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (pydq.Contains(province.Substring(0, 2)))
+        //                {
+        //                    if (num == Convert.ToInt32(hanghao))
+        //                    {
+        //                        yunfei = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "偏远首件");
+        //                        yunfeix = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "偏远续件");
+        //                    }
+        //                    else
+        //                    {
+        //                        yunfei = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "偏远续件");
+        //                    }
+
+        //                }
+        //                else if (province.Substring(0, 2) == "广东")
+        //                {
+        //                    yunfei = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "省内");
+        //                    yunfeix = yunfei;
+        //                }
+        //                else if (province.Substring(0, 2) == "香港" || province.Substring(0, 2) == "台湾")
+        //                {
+        //                    yunfei = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "首件");
+        //                }
+        //                else
+        //                {
+        //                    if (num == Convert.ToInt32(hanghao))
+        //                    {
+        //                        yunfei = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "省外首件");
+        //                        yunfeix = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "省外续件");
+        //                    }
+        //                    else
+        //                    {
+        //                        yunfei = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "省外续件");
+        //                    }
+        //                }
+        //                byf = (Convert.ToInt32(yunfei) + Convert.ToInt32(yunfeix) * (Convert.ToInt32(shuliang) - 1)) + Convert.ToInt32(Globals.Sheet1.get_Range("H" + hanghao).Value2);
+
+        //            }
+        //            Globals.Sheet1.get_Range("H" + hanghao).Value2 = byf;
+
+        //        }
+        //    }
+
+        //}
+
+        /// <summary>
+        /// 获取圆通大头笔
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void YTOBTN_Click(object sender, EventArgs e)
         {
-            var selection = Globals.ThisWorkbook.Application.Selection;            
-            int a = selection.Rows.Count+1;
-            Globals.Sheet1.get_Range("U"+ selection.Rows[1].Row+":AA"+ selection.Rows[selection.Rows.Count].Row).Value2="";
-            string cpqd = Globals.Sheet4.get_Range("B8").Value2;
-            string yfjs = Globals.Sheet4.get_Range("B10").Value2;
-            string tsqy = Globals.Sheet4.get_Range("D10").Value2;
-            string kyqy = Globals.Sheet4.get_Range("D11").Value2;
-            string emsqy = Globals.Sheet4.get_Range("D12").Value2;
-            string emsqyc = Globals.Sheet4.get_Range("E12").Value2;
-            System.Data.DataTable drtable =ImportExcelFile(cpqd,0,1,2);
-            //Excel.Workbook wb =Application.Workbooks.Open(cpqd, missing, true, missing, missing, missing,missing, missing, missing, true, missing, missing, missing, missing, missing);
-            //Excel.Worksheet ws = (Excel.Worksheet)wb.Worksheets.get_Item(1);
-            //Globals.Sheet1.get_Range("O2").Value2= ws.get_Range("B12").Value2;
-            System.Data.DataTable sametable=samenum(a,2,null);
-            for (int i = 1; i < a; i++)
-            {
-                if (selection.Cells.SpecialCells(XlCellType.xlCellTypeVisible, 12).Rows[i].Hidden == false)
-                {
-                    int num = selection.Rows[i].Row;
-                    int snum = Convert.ToInt32(Globals.Sheet1.get_Range("C" + num).Value2);
-                    if (Globals.Sheet1.get_Range("L" + num).Value2 == null)
-                    {
-                        continue;
-                    }
-                    string bnum = Globals.Sheet1.get_Range("D" + num).Value2.ToString();
-                    string pname = Globals.Sheet1.get_Range("B" + num).Value2.ToString();
-                    string province = Globals.Sheet1.get_Range("K" + num).Value2;
-                    string city = Globals.Sheet1.get_Range("L" + num).Value2;
-                    string xian = Globals.Sheet1.get_Range("M" + num).Value2;
-                    string address = Globals.Sheet1.get_Range("N" + num).Value2;
-                    string size = GetStrName(drtable, bnum, "编码", "=", "规格");
-                    string xiangzhong = GetStrName(drtable, bnum, "编码", "=", "每箱重量（kg）");
-                    string jianzhong = GetStrName(drtable, bnum, "编码", "=", "单件重量（kg）");
-                    string sfjzx = GetStrName(drtable, bnum, "编码", "=", "顺丰计重箱");
-                    string sfjzt = GetStrName(drtable, bnum, "编码", "=", "顺丰计重台");
-                    string kyjzx = GetStrName(drtable, bnum, "编码", "=", "跨越物流");
-                    string hanghao = GetStrName(sametable, address, "地址", "=", "行号");
-                    string xs = "";
-                    decimal sizenum = GetNumber(size);
-                    string danwei = Getcn(size);
-                    if (sizenum != 0)
-                    {
-                        decimal xiangshu = snum / Convert.ToInt32(sizenum);
-                        decimal jianshu = snum % sizenum;
-                        if (jianshu != 0 && xiangshu != 0)
-                        {
-                            xs = xiangshu + "箱" + pname + "+" + jianshu + danwei.Substring(0, 1) + pname;
-                        }
-                        else if (jianshu != 0 && xiangshu == 0)
-                        {
-                            xs = jianshu + danwei.Substring(0, 1) + pname;
-                        }
-                        else
-                        {
-                            xs = xiangshu + "箱" + pname;
-                        }
-                        Globals.Sheet1.get_Range("U" + num).Value2 = xs;
-                        if (GetNumber(sfjzx) > 0)
-                        { xiangzhong = GetNumber(sfjzx).ToString(); }
-                        if (GetNumber(sfjzt) > 0)
-                        { jianzhong = GetNumber(sfjzt).ToString(); }
-                        decimal zhongliangb = xiangshu * Convert.ToDecimal((xiangzhong != "") ? xiangzhong : "0");
-                        decimal zhongliangs = jianshu * Convert.ToDecimal((jianzhong != "") ? jianzhong : "0");
-                        decimal zhongliangt = zhongliangb + zhongliangs;//重量
-                        decimal hebingzhong = Convert.ToDecimal(Globals.Sheet1.get_Range("V" + hanghao).Value2);
-                        decimal ZL = hebingzhong + zhongliangt;
-                        Globals.Sheet1.get_Range("V" + hanghao).Value2 = ZL;
-                        //计算顺丰邮费
-                        System.Data.DataTable SFtable = ImportExcelFile(yfjs, 0, 2, 3);
-                        string yunfei = "0";
-                        //if(tsqy.Contains(city.Substring(0,2)))
-                        //{
-                        //    city= province;
-                        //}
-                        string minpay = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "最低消费(顺丰)");
-                        if (minpay == null) { minpay = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "最低消费(顺丰)"); }
-                        string qizhong = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "发货起重(顺丰)");
-                        if (qizhong == null) { qizhong = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "发货起重(顺丰)"); }
-                        qizhong = qizhong == "" ? "0 " : qizhong;
-                        minpay = minpay == "" ? "0" : minpay;
-                        if (ZL > Convert.ToInt32(qizhong))
-                        {
-                            yunfei = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "顺丰物流");
-                            if (yunfei == "0")
-                            {
-                                yunfei = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "顺丰物流");
-                            }
-                        }
-
-
-                        decimal jiage = ZL * Convert.ToDecimal(yunfei);
-                        decimal finaljiage;
-                        //if (yunfei != "0")
-                        //{
-                        finaljiage = jiage > Convert.ToDecimal(minpay) ? jiage : Convert.ToDecimal(minpay);
-                        //}
-                        //else
-                        //{
-                        //    finaljiage = 0;
-                        //}
-                        Globals.Sheet1.get_Range("W" + hanghao).Value2 = finaljiage;
-                        //计算跨越邮费
-                        //System.Data.DataTable KYtable = ImportExcelFile(yfjs, 0,2,3);
-                        city = Globals.Sheet1.get_Range("L" + num).Value2;
-                        //if (kyqy.Contains(province.Substring(0, 2)) || kyqy.Contains(city.Substring(0, 2)))
-                        //{
-                        if (GetNumber(kyjzx) > 0)
-                        {
-                            xiangzhong = GetNumber(kyjzx).ToString();
-                        }
-                        if (GetNumber(sfjzt) > 0)
-                        {
-                            jianzhong = GetNumber(sfjzt).ToString();
-                        }
-                        zhongliangb = xiangshu * Convert.ToDecimal((xiangzhong != "") ? xiangzhong : "0");
-                        zhongliangs = jianshu * Convert.ToDecimal((jianzhong != "") ? jianzhong : "0");
-                        zhongliangt = zhongliangb + zhongliangs;
-                        hebingzhong = Convert.ToDecimal(Globals.Sheet1.get_Range("X" + hanghao).Value2);
-                        ZL = hebingzhong + zhongliangt;
-                        qizhong = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "发货起重(跨越)");
-                        if (qizhong == null) { qizhong = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "发货起重(跨越)"); }
-                        yunfei = "0";
-                        minpay = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "最低消费(跨越)");
-                        if (minpay == null) { minpay = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "最低消费(跨越)"); }
-                        qizhong = qizhong == "" ? "0 " : qizhong;
-                        minpay = minpay == "" ? "0" : minpay;
-                        if (ZL <= 100 & ZL >= Convert.ToInt32(qizhong))
-                        {
-                            yunfei = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "≤100");
-                            if (yunfei == null)
-                            {
-                                yunfei = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "≤100");
-                            }
-
-                        }
-                        else if (ZL > 100 && ZL <= 300)
-                        {
-                            yunfei = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "101-300");
-                            if (yunfei == null)
-                            {
-                                yunfei = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "101-300");
-                            }
-                        }
-                        else if (ZL > 300 && ZL <= 500)
-                        {
-                            yunfei = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "301-500");
-                            if (yunfei == null)
-                            {
-                                yunfei = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "301-500");
-                            }
-                        }
-                        else if (ZL > 500 && ZL <= 1000)
-                        {
-                            yunfei = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "501-1000G");
-                            if (yunfei == null)
-                            {
-                                yunfei = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "501-1000");
-                            }
-                        }
-                        else if (ZL > 1000)
-                        {
-                            yunfei = GetStrName(SFtable, "%" + city.Substring(0, 2) + "%", "目的城市", " like", "＞1000");
-                            if (yunfei == null)
-                            {
-                                yunfei = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "目的城市", " like", "＞1000");
-                            }
-                        }
-                        yunfei = yunfei == "" ? "0" : yunfei;
-                        jiage = ZL * Convert.ToDecimal(yunfei);
-                        //if (yunfei != "0")
-                        //{
-                        finaljiage = jiage > Convert.ToDecimal(minpay) ? jiage : Convert.ToDecimal(minpay);
-                        //}
-                        //else
-                        //{
-                        //    finaljiage = 0;
-                        //}
-                        Globals.Sheet1.get_Range("X" + hanghao).Value2 = ZL;
-                        Globals.Sheet1.get_Range("Y" + hanghao).Value2 = finaljiage;
-                        //}
-                        //计算ems邮费 
-                        //if (emsqy.Contains(province.Substring(0, 2)) && !emsqyc.Contains(xian.Substring(0, 2)))
-                        //{
-
-                        //    string emssz = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "地点", " like", "EMS首重1");
-                        //    string emssz2 = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "地点", " like", "EMS首重2");
-                        //    string emsxz = GetStrName(SFtable, "%" + province.Substring(0, 2) + "%", "地点", " like", "EMS续重");
-                        //    xiangzhong = GetStrName(drtable, bnum, "编码", "=", "每箱重量（kg）");
-                        //    jianzhong = GetStrName(drtable, bnum, "编码", "=", "单件重量（kg）");
-                        //    zhongliangb = xiangshu * Convert.ToDecimal((xiangzhong != "") ? xiangzhong : "0");
-                        //    zhongliangs = jianshu * Convert.ToDecimal((jianzhong != "") ? jianzhong : "0");
-                        //    zhongliangt = zhongliangb + zhongliangs;
-                        //    double syzl = Convert.ToDouble(zhongliangt);
-
-                        //    if (syzl > 0.5)
-                        //    {
-                        //        syzl = syzl - 1;
-                        //        int time = 0;
-                        //        for (int k=0; syzl > 0.5; k++)
-                        //        {
-                        //            time++;
-                        //            syzl = syzl - 0.5;       
-
-                        //        }
-                        //        if (syzl > 0 && syzl < 0.5) { time++; }
-                        //         jiage = Convert.ToInt32(emssz2) + 1 +(time* Convert.ToInt32(emsxz));
-                        //    }
-                        //    else
-                        //    {
-                        //        jiage = Convert.ToInt32(emssz) + 1;
-                        //    }
-                        //    Globals.Sheet1.get_Range("Z" + num).Value2 = jiage + "元";
-                        //}
-                    }
-
-                }
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
+            Sqlhelper con = new Sqlhelper();
+            Excel.Worksheet activeWorksheet = ((Excel.Worksheet)Application.ActiveSheet);
             var selection = Globals.ThisWorkbook.Application.Selection;
             int a = selection.Rows.Count + 1;
-            Globals.Sheet1.get_Range("H" + selection.Rows[1].Row + ":H" + selection.Rows[selection.Rows.Count].Row).Value2 = "";
-            string pydq = Globals.Sheet4.get_Range("D13").Value2;
-            string yfjs = Globals.Sheet4.get_Range("B10").Value2;
-            string cpqd = Globals.Sheet4.get_Range("B8").Value2;
-            System.Data.DataTable yftable = ImportExcelFile(yfjs,1,1,2);
-            System.Data.DataTable emstable = ImportExcelFile(yfjs, 2, 3, 4);
-            System.Data.DataTable drtable = ImportExcelFile(cpqd, 0, 1, 2);
-            string emsqy = Globals.Sheet4.get_Range("D12").Value2;
-            string emsqyc = Globals.Sheet4.get_Range("E12").Value2;
-            string yunfei="0";
-            string yunfeix = "0";
-            System.Data.DataTable sametable = samenum(a,3,yftable);
+            int firstnum= selection.Rows[1].Row;
+            int lastnum = selection.Rows[a-1].Row;
+            object[,] mark = new object[a,1];
+            object[] tmark = new object[1] { mark };
+            string fcell = "T" + firstnum + ":T" + lastnum;
             for (int i = 1; i < a; i++)
             {
                 if (selection.Cells.SpecialCells(XlCellType.xlCellTypeVisible, 12).Rows[i].Hidden == false)
@@ -635,99 +755,137 @@ namespace ExcelWorkbook4
                     {
                         continue;
                     }
-                    int snum = Convert.ToInt32(Globals.Sheet1.get_Range("C" + num).Value2);
-                    string bnum = Globals.Sheet1.get_Range("D" + num).Value2.ToString();
-                    string shuliang = Globals.Sheet1.get_Range("C" + num).Value2.ToString();
-                    string province = Globals.Sheet1.get_Range("K" + num).Value2 == null ? "  " : Globals.Sheet1.get_Range("K" + num).Value2;
-                    string city = Globals.Sheet1.get_Range("L" + num).Value2;
-                    string xian = Globals.Sheet1.get_Range("M" + num).Value2;
-                    string address = Globals.Sheet1.get_Range("N" + num).Value2;
-                    string size = GetStrName(drtable, bnum, "编码", "=", "规格");
-                    object maxnum = sametable.Compute("Min(优先级)", "地址='" + address + "'");
-                    string hanghao = GetStrName(sametable, address, "优先级='" + maxnum + "'and 地址", "=", "行号");
-                    int byf = 0;
-                    int jiage = 0;
-                    if (emsqy.Contains(province.Substring(0, 2)) && !emsqyc.Contains(xian.Substring(0, 2)))
+                    var province = activeWorksheet.get_Range("K" + num).Value2;
+                    var city = activeWorksheet.get_Range("L" + num).Value2;
+                    var district = activeWorksheet.get_Range("M" + num).Value2;
+                    if (province == null || province == "")
                     {
-                        decimal sizenum = GetNumber(size);
-                        if (sizenum != 0)
-                        {
-                            decimal xiangshu = snum / Convert.ToInt32(sizenum);
-                            decimal jianshu = snum % sizenum;
-                            string emssz = GetStrName(emstable, "%" + province.Substring(0, 2) + "%", "地点", " like", "EMS首重1");
-                            string emssz2 = GetStrName(emstable, "%" + province.Substring(0, 2) + "%", "地点", " like", "EMS首重2");
-                            string emsxz = GetStrName(emstable, "%" + province.Substring(0, 2) + "%", "地点", " like", "EMS续重");
-                            string xiangzhong = GetStrName(drtable, bnum, "编码", "=", "每箱重量（kg）");
-                            string jianzhong = GetStrName(drtable, bnum, "编码", "=", "单件重量（kg）");
-                            decimal zhongliangb = xiangshu * Convert.ToDecimal((xiangzhong != "") ? xiangzhong : "0");
-                            decimal zhongliangs = jianshu * Convert.ToDecimal((jianzhong != "") ? jianzhong : "0");
-                            decimal zhongliangt = zhongliangb + zhongliangs;
-                            double syzl = Convert.ToDouble(zhongliangt);
-                            if (syzl > 0.5)
-                            {
-                                syzl = syzl - 1;
-                                int time = 0;
-                                for (int k = 0; syzl > 0.5; k++)
-                                {
-                                    time++;
-                                    syzl = syzl - 0.5;
-
-                                }
-                                if (syzl > 0 && syzl < 0.5) { time++; }
-                                jiage = Convert.ToInt32(emssz2) + 1 + (time * Convert.ToInt32(emsxz));
-                            }
-                            else
-                            {
-                                jiage = Convert.ToInt32(emssz) + 1;
-                            }
-
-                            byf = jiage;
-                        }
+                        province = city.Substring(0, 2).ToString();
                     }
-                    else
+                   
+                    string sql =string.Format("select mark from t_ytoaddress where province='{0}' and city='{1}' and district='{2}' ",province,city,district);
+                    using (IDataReader rd = con.sqlReader(sql))
                     {
-                        if (pydq.Contains(province.Substring(0, 2)))
-                        {
-                            if (num == Convert.ToInt32(hanghao))
-                            {
-                                yunfei = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "偏远首件");
-                                yunfeix = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "偏远续件");
-                            }
-                            else
-                            {
-                                yunfei = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "偏远续件");
-                            }
 
-                        }
-                        else if (province.Substring(0, 2) == "广东")
+                        if (rd.Read())
                         {
-                            yunfei = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "省内");
-                            yunfeix = yunfei;
+                            mark[i-1,0]= rd["mark"].ToString();
                         }
-                        else if (province.Substring(0, 2) == "香港" || province.Substring(0, 2) == "台湾")
-                        {
-                            yunfei = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "首件");
-                        }
-                        else
-                        {
-                            if (num == Convert.ToInt32(hanghao))
-                            {
-                                yunfei = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "省外首件");
-                                yunfeix = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "省外续件");
-                            }
-                            else
-                            {
-                                yunfei = GetStrName(yftable, "%" + bnum + "%", "类型", " like", "省外续件");
-                            }
-                        }
-                        byf = (Convert.ToInt32(yunfei) + Convert.ToInt32(yunfeix) * (Convert.ToInt32(shuliang) - 1)) + Convert.ToInt32(Globals.Sheet1.get_Range("H" + hanghao).Value2);
-
+                      
                     }
-                    Globals.Sheet1.get_Range("H" + hanghao).Value2 = byf;
+                }
+              
+            }
+           
+            activeWorksheet.get_Range(fcell).Columns[1].Value2 = tmark[0];
+           
+        }
 
+        public void creatsheet()
+        {
+            Excel.Worksheet activeWorksheet = ((Excel.Worksheet)Application.ActiveSheet);
+            int colnum = activeWorksheet.UsedRange.Columns.Count;
+            string collocal= IndexToColumn(colnum);
+            int rownum = activeWorksheet.UsedRange.Columns.Rows.Count;
+            object[,] mark = new object[rownum, colnum];
+            object[] tmark = new object[1] { mark };
+            string areas = "A1:" + collocal + rownum;
+            tmark[0] = activeWorksheet.UsedRange.Value2;
+            mark = tmark[0] as object[,];
+            System.Data.DataTable datat=new System.Data.DataTable();
+            System.Data.DataTable newdt = new System.Data.DataTable();
+            for (int i=1;i<colnum+1;i++)
+            {
+                DataColumn column = new DataColumn(Convert.ToString(mark[1,i]));
+                DataColumn column1 = new DataColumn(Convert.ToString(mark[1, i]));
+                if (column.ColumnName == null) { column.ColumnName = ""; }
+                if (column1.ColumnName == null) { column1.ColumnName = ""; }
+                datat.Columns.Add(column);
+                newdt.Columns.Add(column1);
+            }
+          
+            for (int j=1;j<rownum;j++)
+            {
+                DataRow dataRow = datat.NewRow();
+                for (int k=1;k<colnum+1;k++)
+                {
+                    dataRow[k - 1] = mark[j + 1, k];
+                }
+                datat.Rows.Add(dataRow);
+            }
+            System.Data.DataTable distinctdt = datat;
+            var query = from t in datat.AsEnumerable()
+                        group t by new { t1 = t.Field<string>("地址"), t2 = t.Field<string>("姓名"), t3 = t.Field<string>("电话") } into m
+                        select new
+                        {
+                           
+                            address = m.Key.t1,
+                            name = m.Key.t2,
+                            phone = m.Key.t3,
+                            rowcount = m.Count()
+            };
+            foreach (var q in query)
+            {
+                if (q.rowcount > 1)
+                {
+                    DataRow[] dr = datat.Select("地址 ='"+q.address+"'");
+                    
+                    for (int i=0;i<dr.Count();i++)
+                    {
+                        newdt.Rows.Add(dr[i].ItemArray);
+                        distinctdt.Rows.Remove(dr[i]);
+                    }
                 }
             }
+            DataView dw = distinctdt.DefaultView;
+            dw.Sort="产品名称 asc ,数量 asc";
+            distinctdt = dw.ToTable();
+            distinctdt.Merge(newdt);
+            for (int j = 0; j < distinctdt.Columns.Count; j++)
+            {
+                mark[1, j + 1] = distinctdt.Columns[j].ColumnName;
+            }
+            for (int i = 0; i < distinctdt.Rows.Count; i++)
+            {
+                for (int k = 0; k < distinctdt.Columns.Count; k++)
+                {
+                    mark[i + 2, k + 1] = distinctdt.Rows[i].ItemArray[k];
+                }
+            }
+            tmark[0] = mark;
+            Excel.Worksheet newsheet = Globals.ThisWorkbook.Worksheets.Add(missing, activeWorksheet, missing,missing);
+            //newsheet.Name = "排序订单";
+            activeWorksheet.UsedRange.Copy();
+            newsheet.get_Range(areas).PasteSpecial(Excel.XlPasteType.xlPasteFormats,Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, System.Type.Missing, System.Type.Missing);
+            newsheet.get_Range(areas).Value = tmark[0];
+        }
+        private string IndexToColumn(int index)
+        {
+            if (index <= 0)
+            {
+                throw new Exception("列数异常");
+            }
+            index--;
+            string column = string.Empty;
+            do
+            {
+                if (column.Length > 0)
+                {
+                    index--;
+                }
+                column = ((char)(index % 26 + (int)'A')).ToString() + column;
+                index = (int)((index - index % 26) / 26);
+            }
+            while (index > 0);
+            return column;
 
-        }     
+        }
+
+        private void btnsort_Click(object sender, EventArgs e)
+        {
+            creatsheet();
+
+        }
+
     }
 }

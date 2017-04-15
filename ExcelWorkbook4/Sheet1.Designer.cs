@@ -17,14 +17,14 @@ namespace ExcelWorkbook4 {
     [global::System.Security.Permissions.PermissionSetAttribute(global::System.Security.Permissions.SecurityAction.Demand, Name="FullTrust")]
     public sealed partial class Sheet1 : Microsoft.Office.Tools.Excel.WorksheetBase {
         
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
         
-        internal Microsoft.Office.Tools.Excel.Controls.Button button1;
+        internal Microsoft.Office.Tools.Excel.Controls.Button ZTOBTN;
         
-        internal Microsoft.Office.Tools.Excel.Controls.Button button2;
+        internal Microsoft.Office.Tools.Excel.Controls.Button YTOBTN;
         
-        internal Microsoft.Office.Tools.Excel.Controls.Button button3;
+        internal Microsoft.Office.Tools.Excel.Controls.Button btnsort;
         
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -35,7 +35,7 @@ namespace ExcelWorkbook4 {
         
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void Initialize() {
             base.Initialize();
@@ -49,7 +49,7 @@ namespace ExcelWorkbook4 {
         
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void FinishInitialization() {
             this.InternalStartup();
@@ -58,7 +58,7 @@ namespace ExcelWorkbook4 {
         
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void InitializeDataBindings() {
             this.BeginInitialization();
@@ -68,7 +68,7 @@ namespace ExcelWorkbook4 {
         
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeCachedData() {
             if ((this.DataHost == null)) {
@@ -81,14 +81,14 @@ namespace ExcelWorkbook4 {
         
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeData() {
         }
         
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void BindToData() {
         }
@@ -116,7 +116,7 @@ namespace ExcelWorkbook4 {
         
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void BeginInitialization() {
             this.BeginInit();
@@ -124,7 +124,7 @@ namespace ExcelWorkbook4 {
         
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
             this.EndInit();
@@ -132,49 +132,49 @@ namespace ExcelWorkbook4 {
         
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeControls() {
-            this.button1 = new Microsoft.Office.Tools.Excel.Controls.Button(Globals.Factory, this.ItemProvider, this.HostContext, "296D1BD0C2CD582477729BAC24C383C8AF45F2", "296D1BD0C2CD582477729BAC24C383C8AF45F2", this, "button1");
-            this.button2 = new Microsoft.Office.Tools.Excel.Controls.Button(Globals.Factory, this.ItemProvider, this.HostContext, "38E86C7B23DE693415E39CAA35345A95F085D3", "38E86C7B23DE693415E39CAA35345A95F085D3", this, "button2");
-            this.button3 = new Microsoft.Office.Tools.Excel.Controls.Button(Globals.Factory, this.ItemProvider, this.HostContext, "6D6DD327C6F0FC64F196A3DB697E9382CBDB06", "6D6DD327C6F0FC64F196A3DB697E9382CBDB06", this, "button3");
+            this.ZTOBTN = new Microsoft.Office.Tools.Excel.Controls.Button(Globals.Factory, this.ItemProvider, this.HostContext, "296D1BD0C2CD582477729BAC24C383C8AF45F2", "296D1BD0C2CD582477729BAC24C383C8AF45F2", this, "ZTOBTN");
+            this.YTOBTN = new Microsoft.Office.Tools.Excel.Controls.Button(Globals.Factory, this.ItemProvider, this.HostContext, "7F2AE036A71F46747FC7A9E77AFAEE05499767", "7F2AE036A71F46747FC7A9E77AFAEE05499767", this, "YTOBTN");
+            this.btnsort = new Microsoft.Office.Tools.Excel.Controls.Button(Globals.Factory, this.ItemProvider, this.HostContext, "8DBA197D1857868407D88AC18CC7D67C8DD518", "8DBA197D1857868407D88AC18CC7D67C8DD518", this, "btnsort");
         }
         
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "14.0.0.0")]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeComponents() {
             // 
-            // button1
+            // ZTOBTN
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.Control;
-            this.button1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button1.Name = "button1";
-            this.button1.Text = "生成大头笔(&F)";
-            this.button1.UseVisualStyleBackColor = false;
+            this.ZTOBTN.BackColor = System.Drawing.SystemColors.Control;
+            this.ZTOBTN.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ZTOBTN.Name = "ZTOBTN";
+            this.ZTOBTN.Text = "中通大头笔(&F)";
+            this.ZTOBTN.UseVisualStyleBackColor = false;
             // 
-            // button2
+            // YTOBTN
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.Control;
-            this.button2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button2.Name = "button2";
-            this.button2.Text = "功能2(&C)";
-            this.button2.UseVisualStyleBackColor = false;
+            this.YTOBTN.BackColor = System.Drawing.SystemColors.Control;
+            this.YTOBTN.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.YTOBTN.Name = "YTOBTN";
+            this.YTOBTN.Text = "圆通大头笔";
+            this.YTOBTN.UseVisualStyleBackColor = false;
             // 
-            // button3
+            // btnsort
             // 
-            this.button3.BackColor = System.Drawing.SystemColors.Control;
-            this.button3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button3.Name = "button3";
-            this.button3.Text = "button3(&G)";
-            this.button3.UseVisualStyleBackColor = false;
+            this.btnsort.BackColor = System.Drawing.SystemColors.Control;
+            this.btnsort.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnsort.Name = "btnsort";
+            this.btnsort.Text = "排序";
+            this.btnsort.UseVisualStyleBackColor = false;
             // 
             // Sheet1
             // 
-            this.button1.BindingContext = this.BindingContext;
-            this.button2.BindingContext = this.BindingContext;
-            this.button3.BindingContext = this.BindingContext;
+            this.ZTOBTN.BindingContext = this.BindingContext;
+            this.YTOBTN.BindingContext = this.BindingContext;
+            this.btnsort.BindingContext = this.BindingContext;
         }
         
         /// 

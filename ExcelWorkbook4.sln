@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelWorkbook4", "ExcelWorkbook4\ExcelWorkbook4.csproj", "{288FEAAF-C45D-456D-ADF5-FB0635FB01B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "excelmod", "ExcelWorkbook4\excelmod.csproj", "{288FEAAF-C45D-456D-ADF5-FB0635FB01B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
